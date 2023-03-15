@@ -1,6 +1,8 @@
 bool ball_reached = false;
 
 void setup() {
+  Serial.begin(9600);
+
   limit_sw_setup();
   motor_setup();
 }
