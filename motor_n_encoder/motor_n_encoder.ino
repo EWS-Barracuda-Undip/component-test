@@ -100,7 +100,7 @@ void setup() {
   Serial.begin(9600);
 
   Timer.getAvailable().attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
-  kinematik(0, 0, 0);
+  //  kinematik(0, 0, 0);
 
   setMotor(-3000, -3000, 3000, 3000);
 }
