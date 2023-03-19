@@ -102,7 +102,7 @@ void setup() {
   Timer.getAvailable().attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
   kinematik(0, 0, 0);
 
-  setMotor(-1000, -1000, 1000, 1000);
+  setMotor(-3000, -3000, 3000, 3000);
 }
 
 void loop() {
