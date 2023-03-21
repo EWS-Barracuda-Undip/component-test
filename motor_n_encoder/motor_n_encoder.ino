@@ -42,8 +42,8 @@ Encoder FL_enc(FL1, FL2);
 #define motor3RPWM 6
 
 #define en4 29  // Depan Kiri
-#define motor4LPWM 9
-#define motor4RPWM 8
+#define motor4LPWM 8
+#define motor4RPWM 9
 
 // KINEMATIK
 
