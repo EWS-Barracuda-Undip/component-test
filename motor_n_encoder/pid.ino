@@ -30,10 +30,10 @@ void PID_setTarget(float target1, float target2, float target3, float target4) {
 }
 
 void PID_compute() {
-  input1 = mapF(data.parameter.w1, -maxV, maxV, -1, 1);
-  input2 = mapF(data.parameter.w2, -maxV, maxV, -1, 1);
-  input3 = mapF(data.parameter.w3, -maxV, maxV, -1, 1);
-  input4 = mapF(data.parameter.w4, -maxV, maxV, -1, 1);
+  input1 = mapF(W_BR, -maxV, maxV, -1, 1);
+  input2 = mapF(W_FR, -maxV, maxV, -1, 1);
+  input3 = mapF(W_FL, -maxV, maxV, -1, 1);
+  input4 = mapF(W_BL, -maxV, maxV, -1, 1);
 
   epid_pid_calc(&PID_W1, setPoint1, input1);
   epid_pid_calc(&PID_W2, setPoint2, input2);

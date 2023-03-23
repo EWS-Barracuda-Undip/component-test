@@ -1,3 +1,5 @@
+#include <LiquidCrystal_I2C.h>
+
 // ENCODER
 
 #include <Encoder.h>
@@ -26,6 +28,7 @@ Encoder FR_enc(FR1, FR2);  //(A,B)
 Encoder BR_enc(BR1, BR2);
 Encoder BL_enc(BL1, BL2);
 Encoder FL_enc(FL1, FL2);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 // MOTOR
 
@@ -59,6 +62,10 @@ float maxV = 45.0;  //kecepatan motor saat pwm maksimal
 float w1, w2, w3, w4;
 int pwm_w1, pwm_w2, pwm_w3, pwm_w4;
 float w1_target, w2_target, w3_target, w4_target;
+char c;
+float x = 0;
+float y = 0; 
+float z = 0;
 
 double setPoint1, input1;
 double setPoint2, input2;
@@ -97,20 +104,79 @@ union data {
 } data;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
+  Serial1.begin(9600);
+  lcd.init();
+  lcd.backlight();
 
   Timer.getAvailable().attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
-  //  kinematik(0, 0, 0);
+  PID_setup();
   motor_setup();
-
-  setMotor(-3000, -3000, 3000, 3000);
+  kinematik(0, 0, 0);
 }
 
 void loop() {
   //  readFromEncoder();
-  //
-  //  PID_compute();
-  //  PID_setMotor();
+  if(Serial1.available()){
+    c = Serial1.read();
+  }
+  if(c == 'S'){
+    x = 0; y = 0;
+    PID_reset();
+    setMotor(0, 0, 0, 0);
+  }else if(c == 'F'){
+    setMotor(-500, -500, 500, 500);
+    x = 0; y = -0.5;
+  }else if(c == 'R'){
+    setMotor(500, -500, -500, 500);
+    x = -0.5; y = 0;
+  }else if(c == 'B'){
+    x = 0; y = 0.5;
+    setMotor(500, 500, -500, -500);
+  }else if(c == 'L'){
+    x = 0.5; y = 0;
+    setMotor(-500, 500, 500, -500);
+  }else if(c == 'I'){
+    x = -0.5; y = -0.5;
+    setMotor(0, -500, 0, 500);
+  }else if(c == 'J'){
+    setMotor(500, 0, -500, 0);
+    x = -0.5; y = 0.5;
+  }else if(c == 'H'){
+    setMotor(0, 500, 0, -500);
+    x = 0.5; y = 0.5;
+  }else if(c == 'G'){
+    setMotor(-500, 0, 500, 0);
+    x = 0.5; y = -0.5;
+  }else if(c == 'D'){
+    x = 0; y = 0;
+    setMotor(0, 0, 0, 0);
+  }else{
+    x = 0; y = 0; z = 0;
+    setMotor(0, 0, 0, 0);
+  }
+  // kinematik(x, y, 0);
+  // PID_compute();
+  // PID_setMotor();
+  Serial.print(c);
+  Serial.print(" PWM1 : ");
+  lcd.setCursor(0,0);
+  lcd.print(pwm_w1);
+  Serial.print(-pwm_w1);
+  Serial.print(" PWM2 : ");
+  Serial.print(-pwm_w2);
+  lcd.setCursor(0,10);
+  lcd.print(pwm_w2);
+  Serial.print(" PWM3 : ");
+  Serial.print(-pwm_w3);
+  lcd.setCursor(3,0);
+  lcd.print(pwm_w3);
+  Serial.print(" PWM4 : ");
+  Serial.print(-pwm_w4);
+  lcd.setCursor(3,10);
+  lcd.print(pwm_w4);
+  Serial.print(Vx);
+  Serial.println(Vy);
 }
 
 float mapF(float x, float in_min, float in_max, float out_min, float out_max) {
