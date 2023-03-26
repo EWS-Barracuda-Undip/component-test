@@ -1,5 +1,10 @@
-#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
+#include <hd44780.h>
+#include <hd44780ioClass/hd44780_I2Cexp.h>
 
+#include <DueTimer.h>
+
+// #include <LiquidCrystal_I2C.h>
 // ENCODER
 
 #include <Encoder.h>
@@ -28,7 +33,8 @@ Encoder FR_enc(FR1, FR2);  //(A,B)
 Encoder BR_enc(BR1, BR2);
 Encoder BL_enc(BL1, BL2);
 Encoder FL_enc(FL1, FL2);
-LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+hd44780_I2Cexp lcd;
 
 // MOTOR
 
@@ -66,6 +72,8 @@ char c;
 float x = 0;
 float y = 0; 
 float z = 0;
+bool lrotate = 0;
+bool rrotate= 0;
 
 double setPoint1, input1;
 double setPoint2, input2;
@@ -104,12 +112,14 @@ union data {
 } data;
 
 void setup() {
+  lcd.begin(20, 4);
+  lcd.backlight();
   Serial.begin(115200);
   Serial1.begin(9600);
-  lcd.init();
-  lcd.backlight();
 
-  Timer.getAvailable().attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
+
+  Timer1.attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
+  delay(1000);
   PID_setup();
   motor_setup();
   kinematik(0, 0, 0);
@@ -122,61 +132,63 @@ void loop() {
   }
   if(c == 'S'){
     x = 0; y = 0;
-    PID_reset();
-    setMotor(0, 0, 0, 0);
   }else if(c == 'F'){
-    setMotor(-500, -500, 500, 500);
     x = 0; y = -0.5;
   }else if(c == 'R'){
-    setMotor(500, -500, -500, 500);
     x = -0.5; y = 0;
   }else if(c == 'B'){
     x = 0; y = 0.5;
-    setMotor(500, 500, -500, -500);
   }else if(c == 'L'){
     x = 0.5; y = 0;
-    setMotor(-500, 500, 500, -500);
   }else if(c == 'I'){
     x = -0.5; y = -0.5;
-    setMotor(0, -500, 0, 500);
   }else if(c == 'J'){
-    setMotor(500, 0, -500, 0);
     x = -0.5; y = 0.5;
   }else if(c == 'H'){
-    setMotor(0, 500, 0, -500);
     x = 0.5; y = 0.5;
   }else if(c == 'G'){
-    setMotor(-500, 0, 500, 0);
     x = 0.5; y = -0.5;
   }else if(c == 'D'){
     x = 0; y = 0;
-    setMotor(0, 0, 0, 0);
+  }else if(c == 'U'){
+    x = 0; y = 0;
+    lrotate = 1;
+  }else if(c == 'u'){
+    x = 0; y = 0;
+    lrotate = 0;
+  }else if(c == 'W'){
+    x = 0; y = 0;
+    rrotate = 1;
+  }else if(c == 'w'){
+    x = 0; y = 0;
+    rrotate = 0;
   }else{
     x = 0; y = 0; z = 0;
-    setMotor(0, 0, 0, 0);
   }
-  // kinematik(x, y, 0);
-  // PID_compute();
+  kinematik(0, 0, 0);
+  PID_compute();
+  setMotor(200, 200, 200, 200);
   // PID_setMotor();
   Serial.print(c);
-  Serial.print(" PWM1 : ");
+  Serial.print(" 1 : ");
   lcd.setCursor(0,0);
-  lcd.print(pwm_w1);
-  Serial.print(-pwm_w1);
-  Serial.print(" PWM2 : ");
-  Serial.print(-pwm_w2);
-  lcd.setCursor(0,10);
-  lcd.print(pwm_w2);
-  Serial.print(" PWM3 : ");
-  Serial.print(-pwm_w3);
-  lcd.setCursor(3,0);
-  lcd.print(pwm_w3);
-  Serial.print(" PWM4 : ");
-  Serial.print(-pwm_w4);
-  lcd.setCursor(3,10);
-  lcd.print(pwm_w4);
-  Serial.print(Vx);
-  Serial.println(Vy);
+  lcd.print(W_FR);
+  lcd.setCursor(15,0);
+  lcd.print(W_BR);;
+  lcd.setCursor(0,3);
+  lcd.print(W_BL);
+  lcd.setCursor(15,3);
+  lcd.print(W_FL);
+  Serial.print(x);
+  Serial.print(" ");
+  Serial.print(y);
+  // Serial.println(Vy);
+
+  // Serial.print(" 1 : ");  Serial.print(W_FR);
+  // Serial.print(" 2 : ");  Serial.print(W_BR);
+  // Serial.print(" 3 : ");  Serial.print(W_BL);
+  // Serial.print(" 4 : ");  Serial.print(W_FL);
+  Serial.println();
 }
 
 float mapF(float x, float in_min, float in_max, float out_min, float out_max) {
