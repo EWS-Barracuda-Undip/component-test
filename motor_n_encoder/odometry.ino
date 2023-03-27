@@ -17,6 +17,7 @@ void encoderHandler() {
   Py0 += Vy0 * encoderRate / 1000;
 
   vel = sqrt(Vx * Vx + Vy * Vy);
+
 }
 
 void kinematic() {

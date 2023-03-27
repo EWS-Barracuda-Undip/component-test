@@ -1,3 +1,4 @@
+
 #include <Wire.h>
 #include <hd44780.h>
 #include <hd44780ioClass/hd44780_I2Cexp.h>
@@ -8,7 +9,7 @@
 // ENCODER
 
 #include <Encoder.h>
-
+ 
 #define FR1 22  // front right A
 #define FR2 24  // front right B
 #define BR1 38  // back right A
@@ -57,14 +58,13 @@ hd44780_I2Cexp lcd;
 // KINEMATIK
 
 #include <DueTimer.h>
-
 #include <pid.h>
 
 #define rRoda 0.0525
 #define R 0.24
 
 int maxpwm = 3000;
-float maxV = 45.0;  //kecepatan motor saat pwm maksimal
+float maxV = 35.0;  //kecepatan motor saat pwm maksimal
 float w1, w2, w3, w4;
 int pwm_w1, pwm_w2, pwm_w3, pwm_w4;
 float w1_target, w2_target, w3_target, w4_target;
@@ -118,8 +118,7 @@ void setup() {
   Serial1.begin(9600);
 
 
-  Timer1.attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
-  delay(1000);
+  Timer4.attachInterrupt(encoderHandler).start(encoderRate * 1000);  // Call encoderHandler every 10 ms
   PID_setup();
   motor_setup();
   kinematik(0, 0, 0);
@@ -165,30 +164,29 @@ void loop() {
   }else{
     x = 0; y = 0; z = 0;
   }
-  kinematik(0, 0, 0);
+  kinematik(0.5, 0, 0);
   PID_compute();
-  setMotor(200, 200, 200, 200);
-  // PID_setMotor();
-  Serial.print(c);
-  Serial.print(" 1 : ");
+  PID_setMotor();
+  // setMotor(255, 255, -255, -255) ;
+  // Serial.print(c);
+  // Serial.print(" 1 : ");
+  // Serial.print(x);
+  // Serial.print(" ");
+  // Serial.print(y);
+  // Serial.println(Vy);
+  // Serial.println();
+
+
+  
   lcd.setCursor(0,0);
   lcd.print(W_FR);
-  lcd.setCursor(15,0);
+  lcd.setCursor(10,0);
   lcd.print(W_BR);;
-  lcd.setCursor(0,3);
+  lcd.setCursor(0,1);
   lcd.print(W_BL);
-  lcd.setCursor(15,3);
+  lcd.setCursor(10,1);
   lcd.print(W_FL);
-  Serial.print(x);
-  Serial.print(" ");
-  Serial.print(y);
-  // Serial.println(Vy);
-
-  // Serial.print(" 1 : ");  Serial.print(W_FR);
-  // Serial.print(" 2 : ");  Serial.print(W_BR);
-  // Serial.print(" 3 : ");  Serial.print(W_BL);
-  // Serial.print(" 4 : ");  Serial.print(W_FL);
-  Serial.println();
+  // lcd.clear();
 }
 
 float mapF(float x, float in_min, float in_max, float out_min, float out_max) {

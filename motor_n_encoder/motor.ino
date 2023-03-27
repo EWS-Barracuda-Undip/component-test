@@ -36,13 +36,13 @@ void setMotor(int PWM1, int PWM2, int PWM3, int PWM4) {
     PWM1 *= -1;
     digitalWrite(en1, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor1RPWM, 0);
-    analogWrite(motor1LPWM, PWM1);
+    analogWrite(motor1LPWM, 0);
+    analogWrite(motor1RPWM, PWM1);
   } else if (PWM1 > 0) {
     digitalWrite(en1, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor1LPWM, 0);
-    analogWrite(motor1RPWM, PWM1);
+    analogWrite(motor1RPWM, 0);
+    analogWrite(motor1LPWM, PWM1);
   } else if (PWM1 == 0) {
     digitalWrite(en1, LOW);
     analogWriteResolution(12);
@@ -59,13 +59,13 @@ void setMotor(int PWM1, int PWM2, int PWM3, int PWM4) {
     PWM2 *= -1;
     digitalWrite(en2, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor2RPWM, 0);
-    analogWrite(motor2LPWM, PWM2);
+    analogWrite(motor2LPWM, 0);
+    analogWrite(motor2RPWM, PWM2);
   } else if (PWM2 > 0) {
     digitalWrite(en2, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor2LPWM, 0);
-    analogWrite(motor2RPWM, PWM2);
+    analogWrite(motor2RPWM, 0);
+    analogWrite(motor2LPWM, PWM2);
   } else if (PWM2 == 0) {
     digitalWrite(en2, LOW);
     analogWriteResolution(12);
@@ -82,13 +82,13 @@ void setMotor(int PWM1, int PWM2, int PWM3, int PWM4) {
     PWM3 *= -1;
     digitalWrite(en3, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor3RPWM, 0);
-    analogWrite(motor3LPWM, PWM3);
+    analogWrite(motor3LPWM, 0);
+    analogWrite(motor3RPWM, PWM3);
   } else if (PWM3 > 0) {
     digitalWrite(en3, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor3LPWM, 0);
-    analogWrite(motor3RPWM, PWM3);
+    analogWrite(motor3RPWM, 0);
+    analogWrite(motor3LPWM, PWM3);
   } else if (PWM3 == 0) {
     digitalWrite(en3, LOW);
     analogWriteResolution(12);
@@ -105,13 +105,13 @@ void setMotor(int PWM1, int PWM2, int PWM3, int PWM4) {
     PWM4 *= -1;
     digitalWrite(en4, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor4RPWM, 0);
-    analogWrite(motor4LPWM, PWM4);
+    analogWrite(motor4LPWM, 0);
+    analogWrite(motor4RPWM, PWM4);
   } else if (PWM4 > 0) {
     digitalWrite(en4, HIGH);
     analogWriteResolution(12);
-    analogWrite(motor4LPWM, 0);
-    analogWrite(motor4RPWM, PWM4);
+    analogWrite(motor4RPWM, 0);
+    analogWrite(motor4LPWM, PWM4);
   } else if (PWM4 == 0) {
     digitalWrite(en4, LOW);
     analogWriteResolution(12);
