@@ -14,10 +14,10 @@ void motor_setup() {
 }
 
 void kinematik(float Vx, float Vy, float w) {
-  w1_target = -(0.7071 * Vy - 0.7071 * Vx + R * w) / rRoda;
-  w2_target = -(0.7071 * Vy + 0.7071 * Vx + R * w * 0) / rRoda;
-  w3_target = -(-0.7071 * Vy + 0.7071 * Vx + R * w) / rRoda;
-  w4_target = -(-0.7071 * Vy - 0.7071 * Vx + R * w * 0) / rRoda;
+  w1_target = -(0.7071 * Vy - 0.7071 * Vx - R * w) / rRoda;
+  w2_target = -(0.7071 * Vy + 0.7071 * Vx - R * w) / rRoda;
+  w3_target = -(-0.7071 * Vy + 0.7071 * Vx - R * w) / rRoda;
+  w4_target = -(-0.7071 * Vy - 0.7071 * Vx - R * w) / rRoda;
 
   PID_setTarget(w1_target, w2_target, w3_target, w4_target);
 }
