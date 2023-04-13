@@ -13,17 +13,22 @@ void motor_setup() {
   pinMode(motor4RPWM, OUTPUT);
 }
 
-void kinematik(float Vx, float Vy, float w) {
-  w1_target = -(0.7071 * Vy - 0.7071 * Vx - R * w) / rRoda;
-  w2_target = -(0.7071 * Vy + 0.7071 * Vx - R * w) / rRoda;
-  w3_target = -(-0.7071 * Vy + 0.7071 * Vx - R * w) / rRoda;
-  w4_target = -(-0.7071 * Vy - 0.7071 * Vx - R * w) / rRoda;
+void PID_setMotor() {
+  pwm_w1 = mapF(PID_W1.y_out, -1, 1, -maxpwm, maxpwm);
+  pwm_w2 = mapF(PID_W2.y_out, -1, 1, -maxpwm, maxpwm);
+  pwm_w3 = mapF(PID_W3.y_out, -1, 1, -maxpwm, maxpwm);
+  pwm_w4 = mapF(PID_W4.y_out, -1, 1, -maxpwm, maxpwm);
 
-  PID_setTarget(w1_target, w2_target, w3_target, w4_target);
-}
+  lcd.setCursor(0, 2);
+  lcd.print(pwm_w1);
+  lcd.setCursor(10, 2);
+  lcd.print(pwm_w2);
+  lcd.setCursor(0, 3);
+  lcd.print(pwm_w3);
+  lcd.setCursor(10, 3);
+  lcd.print(pwm_w4);
 
-int ang2pwm(float ang) {
-  return map(ang, -maxV, maxV, -maxpwm, maxpwm);
+  setMotor(-pwm_w1, -pwm_w2, -pwm_w3, -pwm_w4);
 }
 
 void setMotor(int PWM1, int PWM2, int PWM3, int PWM4) {

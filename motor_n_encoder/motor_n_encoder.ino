@@ -1,4 +1,3 @@
-
 #include <Wire.h>
 #include <hd44780.h>
 #include <hd44780ioClass/hd44780_I2Cexp.h>
@@ -213,21 +212,14 @@ void loop() {
   // Serial.print(" 2 : ");
   // Serial.println(y);
 
-
-
-
   lcd.setCursor(0, 0);
   lcd.print(W_FR);
   lcd.setCursor(10, 0);
   lcd.print(W_BR);
-  ;
+
   lcd.setCursor(0, 1);
   lcd.print(W_BL);
   lcd.setCursor(10, 1);
   lcd.print(W_FL);
   // lcd.clear();
-}
-
-float mapF(float x, float in_min, float in_max, float out_min, float out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }

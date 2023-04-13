@@ -1,3 +1,22 @@
+//void readFromEncoder() {
+//  if (Serial2.available()) {
+//    char c = Serial2.read();
+//    if (c == '@') {
+//      Serial2.readBytes(data.packet, sizeof(data.packet));
+//      //printArray(data.packet, sizeof(data.packet));
+//      //      Serial.print(" "); Serial.print(data.parameter.w1);
+//      //      Serial.print(" "); Serial.print(data.parameter.w2);
+//      //      Serial.print(" "); Serial.print(data.parameter.w3);
+//      //      Serial.print(" "); Serial.println(data.parameter.w4);
+//      //
+//      //      Serial.print("     "); Serial.print(data.parameter.x);
+//      //      Serial.print(" "); Serial.print(data.parameter.y);
+//      //      Serial.print(" "); Serial.print(data.parameter.theta);
+//      //      Serial.print(" "); Serial.println(data.parameter.vel);
+//    }
+//  }
+//}
+
 void encoderHandler() {
   W_FR = (float)((FR_enc.read() / (0.01 * ppr)) * (2 * pi));  // Calculate how many 'circles' we've been through
   FR_enc.write(0);
