@@ -1,10 +1,11 @@
-#include <Wire.h>
-#include <hd44780.h>
-#include <hd44780ioClass/hd44780_I2Cexp.h>
 
 #include <DueTimer.h>
 
+#include <Wire.h>
+#include <hd44780.h>
+#include <hd44780ioClass/hd44780_I2Cexp.h>
 // #include <LiquidCrystal_I2C.h>
+
 // ENCODER
 
 #include <Encoder.h>
@@ -58,7 +59,6 @@ hd44780_I2Cexp lcd;
 
 // KINEMATIK
 
-#include <DueTimer.h>
 #include <pid.h>
 
 #define rRoda 0.0525
@@ -99,21 +99,19 @@ float theta_ext = 0;  //TES
 float theta_bno, theta_bno_raw, theta_bno_cal = 0;
 float vel;
 
-//
-
-union data {
-  struct parameter {
-    float w1;
-    float w2;
-    float w3;
-    float w4;
-    float x;
-    float y;
-    float theta;
-    float vel;
-  } parameter;
-  byte packet[32];
-} data;
+//union data {
+//  struct parameter {
+//    float w1;
+//    float w2;
+//    float w3;
+//    float w4;
+//    float x;
+//    float y;
+//    float theta;
+//    float vel;
+//  } parameter;
+//  byte packet[32];
+//} data;
 
 void setup() {
   lcd.begin(20, 4);
