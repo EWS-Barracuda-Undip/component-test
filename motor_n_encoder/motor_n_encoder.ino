@@ -94,9 +94,9 @@ epid_t PID_W4;
 float W_FR, W_BR, W_BL, W_FL;
 float W_R, W_L;  //TES
 float Vx = 0, Vy = 0, w = 0, Vx0 = 0, Vy0 = 0;
-float Vx_ext = 0, Vy_ext = 0, w_ext = 0;  //TES
+float x_ext = 0, y_ext = 0, w_ext = 0;  //TES
 float Px = 0, Py = 0, theta = 0, Px0 = 0, Py0 = 0;
-float Px_ext = 0, Py_ext = 0, theta_ext = 0;  //TES
+float theta_ext = 0;  //TES
 float theta_bno, theta_bno_raw, theta_bno_cal = 0;
 float vel;
 

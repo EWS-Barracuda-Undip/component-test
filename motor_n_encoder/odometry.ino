@@ -8,10 +8,10 @@ void encoderHandler() {
   W_FL = (float)((FL_enc.read() / (0.01 * ppr)) * (2 * pi));
   FL_enc.write(0);
 
-  W_R = (float)((R_enc.read() / (0.01 * 600)) * (2 * pi));  //TES
-  R_enc.write(0);
+  W_R = (float)((R_enc.read() / (0.01 * 600)) * (2 * pi));
+  R_enc.write(0);  //TES
   W_L = (float)((L_enc.read() / (0.01 * 600)) * (2 * pi));
-  L_enc.write(0);  //TES
+  L_enc.write(0);
 
   kinematic();  // Calculate the real distance we've been through
 
@@ -20,10 +20,6 @@ void encoderHandler() {
   theta += w * encoderRate / 1000;
   Px0 += Vx0 * encoderRate / 1000;
   Py0 += Vy0 * encoderRate / 1000;
-
-  Px_ext += Vx_ext * encoderRate / 1000;
-  Py_ext += Vy_ext * encoderRate / 1000;
-  theta_ext += w_ext * encoderRate / 1000;
 
   vel = sqrt(Vx * Vx + Vy * Vy);
 }
@@ -38,7 +34,7 @@ void kinematic() {
 }
 
 void kinematic_ext() {  //TES
-  Vx_ext = (W_L * 0.70711 + W_R * 0.70711) * 0.03 * 100;
-  Vy_ext = (W_L * -0.70711 + W_R * 0.70711) * 0.03 * 100;
+  x_ext = (W_L * 0.70711 + W_R * 0.70711) * 0.03 * 100;
+  y_ext = (W_L * -0.70711 + W_R * 0.70711) * 0.03 * 100;
   w_ext = (-W_L / 2 + -W_R / 2) * 0.03 / 0.03 * (180 / pi);
 }  //TES
